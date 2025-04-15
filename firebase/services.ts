@@ -48,3 +48,16 @@ export async function deleteGame(id: string) {
   const gameRef = doc(db, "games", id)
   await deleteDoc(gameRef)
 }
+
+// 메모 추가하기
+export async function addNote(note: { content: string }) {
+  const notesCollection = collection(db, "notes")
+  const docRef = await addDoc(notesCollection, note)
+  return docRef.id
+}
+
+// 메모 삭제하기
+export async function deleteNote(id: string) {
+  const noteRef = doc(db, "notes", id)
+  await deleteDoc(noteRef)
+}
