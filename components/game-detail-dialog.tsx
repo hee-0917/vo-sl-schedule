@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import type { Game } from "@/lib/types"
+import type { Game, Attendee } from "@/lib/types"
 import { CalendarIcon, Clock, MapPin, Ticket, Users } from "lucide-react"
 
 interface GameDetailDialogProps {
@@ -58,6 +58,12 @@ export default function GameDetailDialog({ game, isOpen, onClose }: GameDetailDi
     }
   }
 
+  // 총 티켓 수 계산
+  const getTotalTickets = (attendees: Attendee[]) => {
+    if (!attendees || attendees.length === 0) return 0
+    return attendees.reduce((sum, attendee) => sum + attendee.ticketCount, 0)
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
@@ -93,15 +99,24 @@ export default function GameDetailDialog({ game, isOpen, onClose }: GameDetailDi
                 <span>선예매일: {formatDate(game.preBookingDate)}</span>
               </div>
             )}
-            {game.memo && (
-              <div className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-purple-600" />
-                <span>
-                  관람자: {game.memo.attendees} ({game.memo.ticketCount}매)
-                </span>
-              </div>
-            )}
           </div>
+
+          {game.memo?.attendees && game.memo.attendees.length > 0 && (
+            <div className="mt-4 p-3 bg-gray-50 rounded-md">
+              <div className="flex items-center gap-2 mb-2">
+                <Users className="h-5 w-5 text-purple-600" />
+                <span className="font-medium">관람자 정보 (총 {getTotalTickets(game.memo.attendees)}매)</span>
+              </div>
+              <ul className="space-y-2">
+                {game.memo.attendees.map((attendee, index) => (
+                  <li key={index} className="flex justify-between text-sm">
+                    <span>{attendee.name}</span>
+                    <span className="text-gray-600">{attendee.ticketCount}매</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           <div className="flex flex-wrap gap-2 mt-4">
             {game.isSpecialGame && (

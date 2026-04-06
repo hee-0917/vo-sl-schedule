@@ -11,8 +11,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { gameSchedule } from "@/lib/data"
 import GameDetailDialog from "./game-detail-dialog"
 import MemoDialog from "./memo-dialog"
-import type { Game } from "@/lib/types"
-import { CalendarIcon, Clock, MapPin, FileEdit, Trash2 } from "lucide-react"
+import type { Game, Attendee } from "@/lib/types"
+import { CalendarIcon, Clock, MapPin, FileEdit, Trash2, Loader2 } from "lucide-react"
+import { initializeGames, updateGameMemo, deleteGame } from "@/firebase/services"
 
 export default function ScheduleList() {
   const [searchTerm, setSearchTerm] = useState("")
@@ -20,39 +21,94 @@ export default function ScheduleList() {
   const [selectedGame, setSelectedGame] = useState<Game | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isMemoDialogOpen, setIsMemoDialogOpen] = useState(false)
-  const [games, setGames] = useState<Game[]>(gameSchedule)
+  const [games, setGames] = useState<Game[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  // 로컬 스토리지에서 메모 데이터 로드
+  // Firebase에서 데이터 로드
   useEffect(() => {
-    const savedGames = localStorage.getItem("samsungLionsGames")
-    if (savedGames) {
+    async function loadGames() {
       try {
-        setGames(JSON.parse(savedGames))
-      } catch (e) {
-        console.error("Failed to parse saved games", e)
+        setLoading(true)
+        // Firebase 연결 시도
+        const loadedGames = await initializeGames()
+        setGames(loadedGames)
+        setError(null)
+      } catch (err) {
+        console.error("Firebase 데이터 로드 오류:", err)
+        setError("데이터를 불러오는 중 오류가 발생했습니다. 로컬 데이터를 사용합니다.")
+        // 오류 발생 시 로컬 데이터 사용
+        const savedGames = localStorage.getItem("samsungLionsGames")
+        if (savedGames) {
+          try {
+            setGames(JSON.parse(savedGames))
+          } catch (e) {
+            console.error("로컬 데이터 파싱 오류:", e)
+            setGames(gameSchedule)
+          }
+        } else {
+          setGames(gameSchedule)
+        }
+      } finally {
+        setLoading(false)
       }
     }
+
+    loadGames()
   }, [])
 
-  // 게임 데이터 저장
-  const saveGames = (updatedGames: Game[]) => {
-    setGames(updatedGames)
-    localStorage.setItem("samsungLionsGames", JSON.stringify(updatedGames))
-  }
-
   // 메모 저장
-  const saveMemo = (gameId: string, attendees: string, ticketCount: number) => {
-    const updatedGames = games.map((game) =>
-      game.id === gameId ? { ...game, memo: { attendees, ticketCount } } : game,
-    )
-    saveGames(updatedGames)
-    setIsMemoDialogOpen(false)
+  const saveMemo = async (gameId: string, attendees: Attendee[]) => {
+    try {
+      // Firebase에 메모 저장 시도
+      const success = await updateGameMemo(gameId, attendees)
+
+      if (success) {
+        // Firebase 저장 성공 시 로컬 상태 업데이트
+        const updatedGames = games.map((game) => (game.id === gameId ? { ...game, memo: { attendees } } : game))
+        setGames(updatedGames)
+
+        // 로컬 스토리지에도 백업
+        localStorage.setItem("samsungLionsGames", JSON.stringify(updatedGames))
+      } else {
+        throw new Error("메모 저장 실패")
+      }
+    } catch (err) {
+      console.error("메모 저장 오류:", err)
+
+      // Firebase 저장 실패 시 로컬에만 저장
+      const updatedGames = games.map((game) => (game.id === gameId ? { ...game, memo: { attendees } } : game))
+      setGames(updatedGames)
+      localStorage.setItem("samsungLionsGames", JSON.stringify(updatedGames))
+    } finally {
+      setIsMemoDialogOpen(false)
+    }
   }
 
   // 게임 삭제
-  const deleteGame = (gameId: string) => {
-    const updatedGames = games.filter((game) => game.id !== gameId)
-    saveGames(updatedGames)
+  const handleDeleteGame = async (gameId: string) => {
+    try {
+      // Firebase에서 삭제 시도
+      const success = await deleteGame(gameId)
+
+      if (success) {
+        // Firebase 삭제 성공 시 로컬 상태 업데이트
+        const updatedGames = games.filter((game) => game.id !== gameId)
+        setGames(updatedGames)
+
+        // 로컬 스토리지에도 백업
+        localStorage.setItem("samsungLionsGames", JSON.stringify(updatedGames))
+      } else {
+        throw new Error("게임 삭제 실패")
+      }
+    } catch (err) {
+      console.error("게임 삭제 오류:", err)
+
+      // Firebase 삭제 실패 시 로컬에서만 삭제
+      const updatedGames = games.filter((game) => game.id !== gameId)
+      setGames(updatedGames)
+      localStorage.setItem("samsungLionsGames", JSON.stringify(updatedGames))
+    }
   }
 
   // 필터링된 경기 목록
@@ -84,7 +140,7 @@ export default function ScheduleList() {
   const handleDeleteClick = (e: React.MouseEvent, gameId: string) => {
     e.stopPropagation()
     if (confirm("이 경기를 삭제하시겠습니까?")) {
-      deleteGame(gameId)
+      handleDeleteGame(gameId)
     }
   }
 
@@ -136,8 +192,34 @@ export default function ScheduleList() {
     }
   }
 
+  // 메모 요약 텍스트 생성
+  const getMemoSummary = (attendees: Attendee[]) => {
+    if (!attendees || attendees.length === 0) return ""
+
+    const totalTickets = attendees.reduce((sum, attendee) => sum + attendee.ticketCount, 0)
+
+    if (attendees.length === 1) {
+      return `${attendees[0].name} (${totalTickets}매)`
+    } else {
+      return `${attendees[0].name} 외 ${attendees.length - 1}명 (${totalTickets}매)`
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-40">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600 mb-2" />
+        <p className="text-gray-600">데이터를 불러오는 중입니다...</p>
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-4">
+      {error && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded-md p-3 text-sm text-yellow-800">{error}</div>
+      )}
+
       <Card>
         <CardHeader className="p-3">
           <CardTitle className="text-lg">경기 일정 목록</CardTitle>
@@ -189,7 +271,7 @@ export default function ScheduleList() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className={`h-7 px-2 ${game.memo ? "text-red-500 border-red-500" : "text-blue-500 border-blue-500"}`}
+                        className={`h-7 px-2 ${game.memo?.attendees?.length ? "text-red-500 border-red-500" : "text-blue-500 border-blue-500"}`}
                         onClick={(e) => handleMemoClick(e, game)}
                       >
                         <FileEdit className="h-3.5 w-3.5 mr-1" />
@@ -221,10 +303,8 @@ export default function ScheduleList() {
                     {game.preBookingDate && (
                       <Badge className="bg-green-600 text-xs py-0.5">선예매: {formatDate(game.preBookingDate)}</Badge>
                     )}
-                    {game.memo && (
-                      <Badge className="bg-purple-600 text-xs py-0.5">
-                        {game.memo.attendees} ({game.memo.ticketCount}매)
-                      </Badge>
+                    {game.memo?.attendees?.length > 0 && (
+                      <Badge className="bg-purple-600 text-xs py-0.5">{getMemoSummary(game.memo.attendees)}</Badge>
                     )}
                   </div>
                 </div>

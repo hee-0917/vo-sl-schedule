@@ -7,8 +7,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "삼성 라이온즈 2025 홈경기 일정",
-  description: "삼성 라이온즈 2025 홈경기 일정 및 선예매 가능일 확인",
+  title: "삼성라이온즈 2026 홈경기 일정",
+  description: "삼성라이온즈 2026 홈경기 일정 및 선예매 가능일 확인",
     generator: 'v0.dev'
 }
 

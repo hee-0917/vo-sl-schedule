@@ -1,3 +1,8 @@
+export interface Attendee {
+  name: string
+  ticketCount: number
+}
+
 export interface Game {
   id: string
   date: string
@@ -9,7 +14,6 @@ export interface Game {
   isPreBooking?: boolean
   notes?: string
   memo?: {
-    attendees: string
-    ticketCount: number
+    attendees: Attendee[]
   }
 }
