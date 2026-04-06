@@ -140,9 +140,21 @@ export default function MemoDialog({ game, isOpen, onClose, onSave }: MemoDialog
           <Button variant="outline" onClick={onClose}>
             취소
           </Button>
-          <Button className="bg-blue-600 hover:bg-blue-700" onClick={handleSave}>
-            저장
-          </Button>
+          <div className="flex gap-2">
+            {game.memo?.attendees && game.memo.attendees.length > 0 && (
+              <Button
+                variant="outline"
+                className="text-red-500 border-red-500 hover:bg-red-50"
+                onClick={() => onSave(game.id, [])}
+              >
+                <Trash2 className="h-4 w-4 mr-1" />
+                삭제
+              </Button>
+            )}
+            <Button className="bg-blue-600 hover:bg-blue-700" onClick={handleSave}>
+              저장
+            </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>

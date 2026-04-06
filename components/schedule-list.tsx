@@ -12,10 +12,13 @@ import { gameSchedule } from "@/lib/data"
 import GameDetailDialog from "./game-detail-dialog"
 import MemoDialog from "./memo-dialog"
 import type { Game, Attendee } from "@/lib/types"
-import { CalendarIcon, Clock, MapPin, FileEdit, Trash2, Loader2 } from "lucide-react"
+import { CalendarIcon, Clock, MapPin, FileEdit, Trash2, Loader2, List, CalendarDays } from "lucide-react"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { initializeGames, updateGameMemo, deleteGame } from "@/firebase/services"
+import ScheduleCalendar from "./schedule-calendar"
 
 export default function ScheduleList() {
+  const [viewMode, setViewMode] = useState<"list" | "calendar">("calendar")
   const [searchTerm, setSearchTerm] = useState("")
   const [monthFilter, setMonthFilter] = useState("all")
   const [selectedGame, setSelectedGame] = useState<Game | null>(null)
@@ -220,6 +223,24 @@ export default function ScheduleList() {
         <div className="bg-yellow-50 border border-yellow-200 rounded-md p-3 text-sm text-yellow-800">{error}</div>
       )}
 
+      {/* 보기 모드 전환 */}
+      <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as "list" | "calendar")}>
+        <TabsList className="w-full">
+          <TabsTrigger value="list" className="flex-1 gap-1">
+            <List className="h-4 w-4" />
+            리스트
+          </TabsTrigger>
+          <TabsTrigger value="calendar" className="flex-1 gap-1">
+            <CalendarDays className="h-4 w-4" />
+            캘린더
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
+
+      {viewMode === "calendar" ? (
+        <ScheduleCalendar games={games} onGameClick={handleGameClick} onMemoClick={(game) => { setSelectedGame(game); setIsMemoDialogOpen(true) }} />
+      ) : (
+      <>
       <Card>
         <CardHeader className="p-3">
           <CardTitle className="text-lg">경기 일정 목록</CardTitle>
@@ -315,6 +336,9 @@ export default function ScheduleList() {
           <div className="text-center py-8 text-gray-500">검색 결과가 없습니다.</div>
         )}
       </div>
+
+      </>
+      )}
 
       {selectedGame && (
         <GameDetailDialog game={selectedGame} isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
