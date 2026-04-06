@@ -1,24 +1,25 @@
 import type { Game } from "./types"
 
 // 2026년 삼성 라이온즈 홈경기 일정 (대구 삼성 라이온즈 파크)
+// 선예매일: 화,수,목 경기 → 전주 월요일 14:00 / 금,토,일 경기 → 전주 목요일 14:00
 export const gameSchedule: Game[] = [
   // 3월 경기
   {
     id: "1",
-    date: "2026-03-28T14:00:00",
+    date: "2026-03-28T11:00:00",
     opponent: "롯데",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-03-18T14:00:00",
+    preBookingDate: "2026-03-19T11:00:00",
     notes: "홈 개막전",
   },
   {
     id: "2",
-    date: "2026-03-29T14:00:00",
+    date: "2026-03-29T11:00:00",
     opponent: "롯데",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-03-18T14:00:00",
+    preBookingDate: "2026-03-19T11:00:00",
     notes: "",
   },
   {
@@ -27,7 +28,7 @@ export const gameSchedule: Game[] = [
     opponent: "두산",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-03-22T14:00:00",
+    preBookingDate: "2026-03-23T11:00:00",
     notes: "",
   },
 
@@ -38,7 +39,7 @@ export const gameSchedule: Game[] = [
     opponent: "두산",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-03-22T14:00:00",
+    preBookingDate: "2026-03-23T11:00:00",
     notes: "",
   },
   {
@@ -47,7 +48,7 @@ export const gameSchedule: Game[] = [
     opponent: "두산",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-03-22T14:00:00",
+    preBookingDate: "2026-03-23T11:00:00",
     notes: "",
   },
   {
@@ -56,7 +57,7 @@ export const gameSchedule: Game[] = [
     opponent: "NC",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-01T14:00:00",
+    preBookingDate: "2026-04-02T11:00:00",
     notes: "",
   },
   {
@@ -65,16 +66,16 @@ export const gameSchedule: Game[] = [
     opponent: "NC",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-01T14:00:00",
+    preBookingDate: "2026-04-02T11:00:00",
     notes: "",
   },
   {
     id: "8",
-    date: "2026-04-12T14:00:00",
+    date: "2026-04-12T11:00:00",
     opponent: "NC",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-01T14:00:00",
+    preBookingDate: "2026-04-02T11:00:00",
     notes: "",
   },
   {
@@ -83,7 +84,7 @@ export const gameSchedule: Game[] = [
     opponent: "LG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-08T14:00:00",
+    preBookingDate: "2026-04-09T11:00:00",
     notes: "",
   },
   {
@@ -92,16 +93,16 @@ export const gameSchedule: Game[] = [
     opponent: "LG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-08T14:00:00",
+    preBookingDate: "2026-04-09T11:00:00",
     notes: "",
   },
   {
     id: "11",
-    date: "2026-04-19T14:00:00",
+    date: "2026-04-19T11:00:00",
     opponent: "LG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-08T14:00:00",
+    preBookingDate: "2026-04-09T11:00:00",
     notes: "",
   },
   {
@@ -110,7 +111,7 @@ export const gameSchedule: Game[] = [
     opponent: "SSG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-12T14:00:00",
+    preBookingDate: "2026-04-13T11:00:00",
     notes: "",
   },
   {
@@ -119,7 +120,7 @@ export const gameSchedule: Game[] = [
     opponent: "SSG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-12T14:00:00",
+    preBookingDate: "2026-04-13T11:00:00",
     notes: "",
   },
   {
@@ -128,7 +129,7 @@ export const gameSchedule: Game[] = [
     opponent: "SSG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-12T14:00:00",
+    preBookingDate: "2026-04-13T11:00:00",
     notes: "",
   },
 
@@ -139,7 +140,7 @@ export const gameSchedule: Game[] = [
     opponent: "한화",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-22T14:00:00",
+    preBookingDate: "2026-04-23T11:00:00",
     notes: "",
   },
   {
@@ -148,25 +149,25 @@ export const gameSchedule: Game[] = [
     opponent: "한화",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-22T14:00:00",
+    preBookingDate: "2026-04-23T11:00:00",
     notes: "",
   },
   {
     id: "17",
-    date: "2026-05-03T14:00:00",
+    date: "2026-05-03T11:00:00",
     opponent: "한화",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-22T14:00:00",
+    preBookingDate: "2026-04-23T11:00:00",
     notes: "",
   },
   {
     id: "18",
-    date: "2026-05-05T14:00:00",
+    date: "2026-05-05T11:00:00",
     opponent: "키움",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-26T14:00:00",
+    preBookingDate: "2026-04-27T11:00:00",
     notes: "어린이날",
   },
   {
@@ -175,7 +176,7 @@ export const gameSchedule: Game[] = [
     opponent: "키움",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-26T14:00:00",
+    preBookingDate: "2026-04-27T11:00:00",
     notes: "",
   },
   {
@@ -184,7 +185,7 @@ export const gameSchedule: Game[] = [
     opponent: "키움",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-04-26T14:00:00",
+    preBookingDate: "2026-04-27T11:00:00",
     notes: "",
   },
   {
@@ -193,7 +194,7 @@ export const gameSchedule: Game[] = [
     opponent: "KIA",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-05-06T14:00:00",
+    preBookingDate: "2026-05-07T11:00:00",
     notes: "",
   },
   {
@@ -202,16 +203,16 @@ export const gameSchedule: Game[] = [
     opponent: "KIA",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-05-06T14:00:00",
+    preBookingDate: "2026-05-07T11:00:00",
     notes: "",
   },
   {
     id: "23",
-    date: "2026-05-17T14:00:00",
+    date: "2026-05-17T11:00:00",
     opponent: "KIA",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-05-06T14:00:00",
+    preBookingDate: "2026-05-07T11:00:00",
     notes: "",
   },
   {
@@ -220,7 +221,7 @@ export const gameSchedule: Game[] = [
     opponent: "두산",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-05-20T14:00:00",
+    preBookingDate: "2026-05-21T11:00:00",
     notes: "",
   },
   {
@@ -229,16 +230,16 @@ export const gameSchedule: Game[] = [
     opponent: "두산",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-05-20T14:00:00",
+    preBookingDate: "2026-05-21T11:00:00",
     notes: "",
   },
   {
     id: "26",
-    date: "2026-05-31T14:00:00",
+    date: "2026-05-31T11:00:00",
     opponent: "두산",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-05-20T14:00:00",
+    preBookingDate: "2026-05-21T11:00:00",
     notes: "",
   },
 
@@ -249,7 +250,7 @@ export const gameSchedule: Game[] = [
     opponent: "NC",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-05-24T14:00:00",
+    preBookingDate: "2026-05-25T11:00:00",
     notes: "",
   },
   {
@@ -258,7 +259,7 @@ export const gameSchedule: Game[] = [
     opponent: "NC",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-05-24T14:00:00",
+    preBookingDate: "2026-05-25T11:00:00",
     notes: "",
   },
   {
@@ -267,7 +268,7 @@ export const gameSchedule: Game[] = [
     opponent: "NC",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-05-24T14:00:00",
+    preBookingDate: "2026-05-25T11:00:00",
     notes: "",
   },
   {
@@ -276,7 +277,7 @@ export const gameSchedule: Game[] = [
     opponent: "SSG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-06-03T14:00:00",
+    preBookingDate: "2026-06-04T11:00:00",
     notes: "",
   },
   {
@@ -285,7 +286,7 @@ export const gameSchedule: Game[] = [
     opponent: "SSG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-06-03T14:00:00",
+    preBookingDate: "2026-06-04T11:00:00",
     notes: "",
   },
   {
@@ -294,7 +295,7 @@ export const gameSchedule: Game[] = [
     opponent: "SSG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-06-03T14:00:00",
+    preBookingDate: "2026-06-04T11:00:00",
     notes: "",
   },
   {
@@ -303,7 +304,7 @@ export const gameSchedule: Game[] = [
     opponent: "키움",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-06-07T14:00:00",
+    preBookingDate: "2026-06-08T11:00:00",
     notes: "",
   },
   {
@@ -312,7 +313,7 @@ export const gameSchedule: Game[] = [
     opponent: "키움",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-06-07T14:00:00",
+    preBookingDate: "2026-06-08T11:00:00",
     notes: "",
   },
   {
@@ -321,7 +322,7 @@ export const gameSchedule: Game[] = [
     opponent: "키움",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-06-07T14:00:00",
+    preBookingDate: "2026-06-08T11:00:00",
     notes: "",
   },
   {
@@ -330,7 +331,7 @@ export const gameSchedule: Game[] = [
     opponent: "KT",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-06-17T14:00:00",
+    preBookingDate: "2026-06-18T11:00:00",
     notes: "",
   },
   {
@@ -339,7 +340,7 @@ export const gameSchedule: Game[] = [
     opponent: "KT",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-06-17T14:00:00",
+    preBookingDate: "2026-06-18T11:00:00",
     notes: "",
   },
   {
@@ -348,7 +349,7 @@ export const gameSchedule: Game[] = [
     opponent: "KT",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-06-17T14:00:00",
+    preBookingDate: "2026-06-18T11:00:00",
     notes: "",
   },
 
@@ -359,7 +360,7 @@ export const gameSchedule: Game[] = [
     opponent: "LG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-06-28T14:00:00",
+    preBookingDate: "2026-06-29T11:00:00",
     notes: "",
   },
   {
@@ -368,7 +369,7 @@ export const gameSchedule: Game[] = [
     opponent: "LG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-06-28T14:00:00",
+    preBookingDate: "2026-06-29T11:00:00",
     notes: "",
   },
   {
@@ -377,7 +378,7 @@ export const gameSchedule: Game[] = [
     opponent: "LG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-06-28T14:00:00",
+    preBookingDate: "2026-06-29T11:00:00",
     notes: "",
   },
   {
@@ -386,7 +387,7 @@ export const gameSchedule: Game[] = [
     opponent: "롯데",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-07T14:00:00",
+    preBookingDate: "2026-07-06T11:00:00",
     notes: "",
   },
   {
@@ -395,7 +396,7 @@ export const gameSchedule: Game[] = [
     opponent: "롯데",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-07T14:00:00",
+    preBookingDate: "2026-07-09T11:00:00",
     notes: "",
   },
   {
@@ -404,7 +405,7 @@ export const gameSchedule: Game[] = [
     opponent: "롯데",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-07T14:00:00",
+    preBookingDate: "2026-07-09T11:00:00",
     notes: "",
   },
   {
@@ -413,7 +414,7 @@ export const gameSchedule: Game[] = [
     opponent: "롯데",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-07T14:00:00",
+    preBookingDate: "2026-07-09T11:00:00",
     notes: "",
   },
   {
@@ -422,7 +423,7 @@ export const gameSchedule: Game[] = [
     opponent: "KIA",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-19T14:00:00",
+    preBookingDate: "2026-07-20T11:00:00",
     notes: "",
   },
   {
@@ -431,7 +432,7 @@ export const gameSchedule: Game[] = [
     opponent: "KIA",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-19T14:00:00",
+    preBookingDate: "2026-07-20T11:00:00",
     notes: "",
   },
   {
@@ -440,7 +441,7 @@ export const gameSchedule: Game[] = [
     opponent: "KIA",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-19T14:00:00",
+    preBookingDate: "2026-07-20T11:00:00",
     notes: "",
   },
 
@@ -451,7 +452,7 @@ export const gameSchedule: Game[] = [
     opponent: "한화",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-26T14:00:00",
+    preBookingDate: "2026-07-27T11:00:00",
     notes: "",
   },
   {
@@ -460,7 +461,7 @@ export const gameSchedule: Game[] = [
     opponent: "한화",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-26T14:00:00",
+    preBookingDate: "2026-07-27T11:00:00",
     notes: "",
   },
   {
@@ -469,7 +470,7 @@ export const gameSchedule: Game[] = [
     opponent: "한화",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-26T14:00:00",
+    preBookingDate: "2026-07-27T11:00:00",
     notes: "",
   },
   {
@@ -478,7 +479,7 @@ export const gameSchedule: Game[] = [
     opponent: "두산",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-29T14:00:00",
+    preBookingDate: "2026-07-30T11:00:00",
     notes: "",
   },
   {
@@ -487,7 +488,7 @@ export const gameSchedule: Game[] = [
     opponent: "두산",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-29T14:00:00",
+    preBookingDate: "2026-07-30T11:00:00",
     notes: "",
   },
   {
@@ -496,7 +497,7 @@ export const gameSchedule: Game[] = [
     opponent: "두산",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-07-29T14:00:00",
+    preBookingDate: "2026-07-30T11:00:00",
     notes: "",
   },
   {
@@ -505,7 +506,7 @@ export const gameSchedule: Game[] = [
     opponent: "SSG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-08-09T14:00:00",
+    preBookingDate: "2026-08-10T11:00:00",
     notes: "",
   },
   {
@@ -514,7 +515,7 @@ export const gameSchedule: Game[] = [
     opponent: "SSG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-08-09T14:00:00",
+    preBookingDate: "2026-08-10T11:00:00",
     notes: "",
   },
   {
@@ -523,7 +524,7 @@ export const gameSchedule: Game[] = [
     opponent: "SSG",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-08-09T14:00:00",
+    preBookingDate: "2026-08-10T11:00:00",
     notes: "",
   },
   {
@@ -532,7 +533,7 @@ export const gameSchedule: Game[] = [
     opponent: "KT",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-08-19T14:00:00",
+    preBookingDate: "2026-08-20T11:00:00",
     notes: "",
   },
   {
@@ -541,7 +542,7 @@ export const gameSchedule: Game[] = [
     opponent: "KT",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-08-19T14:00:00",
+    preBookingDate: "2026-08-20T11:00:00",
     notes: "",
   },
   {
@@ -550,7 +551,7 @@ export const gameSchedule: Game[] = [
     opponent: "KT",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-08-19T14:00:00",
+    preBookingDate: "2026-08-20T11:00:00",
     notes: "",
   },
 
@@ -561,7 +562,7 @@ export const gameSchedule: Game[] = [
     opponent: "롯데",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-08-23T14:00:00",
+    preBookingDate: "2026-08-24T11:00:00",
     notes: "",
   },
   {
@@ -570,7 +571,7 @@ export const gameSchedule: Game[] = [
     opponent: "롯데",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-08-23T14:00:00",
+    preBookingDate: "2026-08-24T11:00:00",
     notes: "",
   },
   {
@@ -579,7 +580,7 @@ export const gameSchedule: Game[] = [
     opponent: "롯데",
     location: "대구",
     isAvailable: true,
-    preBookingDate: "2026-08-23T14:00:00",
+    preBookingDate: "2026-08-24T11:00:00",
     notes: "",
   },
 ]
