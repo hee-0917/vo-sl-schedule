@@ -1,12 +1,12 @@
 import type { Game } from "./types"
 
 // 2026년 삼성 라이온즈 홈경기 일정 (대구 삼성 라이온즈 파크)
-// 선예매일: 화,수,목 경기 → 전주 월요일 14:00 / 금,토,일 경기 → 전주 목요일 14:00
+// 선예매일: 화,수,목 경기 → 전주 월요일 11:00 / 금,토,일 경기 → 전주 목요일 11:00
 export const gameSchedule: Game[] = [
   // 3월 경기
   {
     id: "1",
-    date: "2026-03-28T11:00:00",
+    date: "2026-03-28T14:00:00",
     opponent: "롯데",
     location: "대구",
     isAvailable: true,
@@ -15,7 +15,7 @@ export const gameSchedule: Game[] = [
   },
   {
     id: "2",
-    date: "2026-03-29T11:00:00",
+    date: "2026-03-29T14:00:00",
     opponent: "롯데",
     location: "대구",
     isAvailable: true,
@@ -71,7 +71,7 @@ export const gameSchedule: Game[] = [
   },
   {
     id: "8",
-    date: "2026-04-12T11:00:00",
+    date: "2026-04-12T14:00:00",
     opponent: "NC",
     location: "대구",
     isAvailable: true,
@@ -98,7 +98,7 @@ export const gameSchedule: Game[] = [
   },
   {
     id: "11",
-    date: "2026-04-19T11:00:00",
+    date: "2026-04-19T14:00:00",
     opponent: "LG",
     location: "대구",
     isAvailable: true,
@@ -154,7 +154,7 @@ export const gameSchedule: Game[] = [
   },
   {
     id: "17",
-    date: "2026-05-03T11:00:00",
+    date: "2026-05-03T14:00:00",
     opponent: "한화",
     location: "대구",
     isAvailable: true,
@@ -163,7 +163,7 @@ export const gameSchedule: Game[] = [
   },
   {
     id: "18",
-    date: "2026-05-05T11:00:00",
+    date: "2026-05-05T14:00:00",
     opponent: "키움",
     location: "대구",
     isAvailable: true,
@@ -208,7 +208,7 @@ export const gameSchedule: Game[] = [
   },
   {
     id: "23",
-    date: "2026-05-17T11:00:00",
+    date: "2026-05-17T14:00:00",
     opponent: "KIA",
     location: "대구",
     isAvailable: true,
@@ -235,7 +235,7 @@ export const gameSchedule: Game[] = [
   },
   {
     id: "26",
-    date: "2026-05-31T11:00:00",
+    date: "2026-05-31T14:00:00",
     opponent: "두산",
     location: "대구",
     isAvailable: true,
