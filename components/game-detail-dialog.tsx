@@ -80,6 +80,14 @@ export default function GameDetailDialog({ game, isOpen, onClose }: GameDetailDi
             <span>{game.opponent}</span>
           </div>
 
+          {game.result && (
+            <div className="flex justify-center">
+              <Badge className={`${game.result === "win" ? "bg-blue-600" : "bg-red-600"} text-sm px-4 py-1`}>
+                {game.result === "win" ? "승리" : "패배"}
+              </Badge>
+            </div>
+          )}
+
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <CalendarIcon className="h-5 w-5 text-gray-500" />

@@ -13,6 +13,7 @@ export interface Game {
   preBookingDate?: string
   isPreBooking?: boolean
   notes?: string
+  result?: "win" | "loss"
   memo?: {
     attendees: Attendee[]
   }

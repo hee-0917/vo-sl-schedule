@@ -2,10 +2,7 @@
 import {
   collection,
   getDocs,
-  query,
-  where,
   doc,
-  getDoc,
   setDoc,
   updateDoc,
   deleteDoc,
@@ -22,16 +19,14 @@ const USER_ID = "default_user"
 // 모든 경기 일정 가져오기 (초기 데이터 로드)
 export async function initializeGames() {
   try {
-    // 사용자 문서 확인
-    const userDocRef = doc(db, "users", USER_ID)
-    const userDoc = await getDoc(userDocRef)
+    // 게임 데이터가 Firestore에 있는지 확인
+    const gamesCollection = collection(db, `users/${USER_ID}/games`)
+    const gamesSnapshot = await getDocs(gamesCollection)
 
-    // 사용자 문서가 없으면 초기 데이터 설정
-    if (!userDoc.exists()) {
-      // 초기 데이터 설정
-      await setDoc(userDocRef, { initialized: true })
+    // 게임 데이터가 없으면 초기 데이터 업로드
+    if (gamesSnapshot.empty) {
+      console.log("Firestore에 게임 데이터 없음 → 업로드 시작")
 
-      // 배치 작업으로 모든 게임 데이터 저장
       const batch = writeBatch(db)
 
       gameSchedule.forEach((game) => {
@@ -44,13 +39,13 @@ export async function initializeGames() {
       })
 
       await batch.commit()
-      console.log("초기 데이터 설정 완료")
+      console.log("초기 데이터 업로드 완료:", gameSchedule.length, "건")
     }
 
     // 게임 데이터 가져오기
     return await getAllGames()
   } catch (error) {
-    console.error("초기화 오류:", error)
+    console.error("Firebase 초기화 오류:", error)
     // 오류 발생 시 로컬 데이터 반환
     return gameSchedule
   }
@@ -62,12 +57,16 @@ export async function getAllGames() {
     const gamesCollection = collection(db, `users/${USER_ID}/games`)
     const gamesSnapshot = await getDocs(gamesCollection)
 
+    if (gamesSnapshot.empty) {
+      return gameSchedule
+    }
+
     return gamesSnapshot.docs
-      .map((doc) => {
-        const data = doc.data()
+      .map((docSnap) => {
+        const data = docSnap.data()
         return {
           ...data,
-          id: doc.id,
+          id: docSnap.id,
           date: data.date.toDate().toISOString(),
           preBookingDate: data.preBookingDate ? data.preBookingDate.toDate().toISOString() : null,
         } as Game
@@ -75,44 +74,7 @@ export async function getAllGames() {
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
   } catch (error) {
     console.error("게임 데이터 가져오기 오류:", error)
-    // 오류 발생 시 로컬 데이터 반환
     return gameSchedule
-  }
-}
-
-// 특정 월의 경기 일정 가져오기
-export async function getGamesByMonth(month: number) {
-  try {
-    const startDate = new Date(2025, month - 1, 1)
-    const endDate = new Date(2025, month, 0)
-
-    const gamesCollection = collection(db, `users/${USER_ID}/games`)
-    const q = query(
-      gamesCollection,
-      where("date", ">=", Timestamp.fromDate(startDate)),
-      where("date", "<=", Timestamp.fromDate(endDate)),
-    )
-
-    const gamesSnapshot = await getDocs(q)
-
-    return gamesSnapshot.docs
-      .map((doc) => {
-        const data = doc.data()
-        return {
-          ...data,
-          id: doc.id,
-          date: data.date.toDate().toISOString(),
-          preBookingDate: data.preBookingDate ? data.preBookingDate.toDate().toISOString() : null,
-        } as Game
-      })
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-  } catch (error) {
-    console.error("월별 게임 데이터 가져오기 오류:", error)
-    // 오류 발생 시 해당 월의 로컬 데이터 반환
-    return gameSchedule.filter((game) => {
-      const gameDate = new Date(game.date)
-      return gameDate.getMonth() + 1 === month
-    })
   }
 }
 
@@ -126,6 +88,20 @@ export async function updateGameMemo(gameId: string, attendees: Attendee[]) {
     return true
   } catch (error) {
     console.error("메모 업데이트 오류:", error)
+    return false
+  }
+}
+
+// 경기 결과 업데이트
+export async function updateGameResult(gameId: string, result: "win" | "loss" | null) {
+  try {
+    const gameDocRef = doc(db, `users/${USER_ID}/games`, gameId)
+    await updateDoc(gameDocRef, {
+      result: result,
+    })
+    return true
+  } catch (error) {
+    console.error("경기 결과 업데이트 오류:", error)
     return false
   }
 }

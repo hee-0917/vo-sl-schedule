@@ -1,7 +1,6 @@
 // Firebase 설정 파일
-import { initializeApp } from "firebase/app"
+import { initializeApp, getApps } from "firebase/app"
 import { getFirestore } from "firebase/firestore"
-import { getAuth } from "firebase/auth"
 
 // Firebase 설정
 const firebaseConfig = {
@@ -15,20 +14,8 @@ const firebaseConfig = {
   measurementId: "G-D57TKJZL81",
 }
 
-// Firebase 초기화
-let app
-let db
-let auth
+// Firebase 초기화 (중복 초기화 방지)
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0]
+const db = getFirestore(app)
 
-// 클라이언트 사이드에서만 Firebase 초기화
-if (typeof window !== "undefined") {
-  try {
-    app = initializeApp(firebaseConfig)
-    db = getFirestore(app)
-    auth = getAuth(app)
-  } catch (error) {
-    console.error("Firebase 초기화 오류:", error)
-  }
-}
-
-export { app, db, auth }
+export { app, db }

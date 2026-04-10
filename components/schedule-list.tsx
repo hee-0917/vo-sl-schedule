@@ -14,7 +14,7 @@ import MemoDialog from "./memo-dialog"
 import type { Game, Attendee } from "@/lib/types"
 import { CalendarIcon, Clock, MapPin, FileEdit, Trash2, Loader2, List, CalendarDays } from "lucide-react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { initializeGames, updateGameMemo, deleteGame } from "@/firebase/services"
+import { initializeGames, updateGameMemo, updateGameResult, deleteGame } from "@/firebase/services"
 import ScheduleCalendar from "./schedule-calendar"
 
 export default function ScheduleList() {
@@ -109,6 +109,27 @@ export default function ScheduleList() {
 
       // Firebase 삭제 실패 시 로컬에서만 삭제
       const updatedGames = games.filter((game) => game.id !== gameId)
+      setGames(updatedGames)
+      localStorage.setItem("samsungLionsGames", JSON.stringify(updatedGames))
+    }
+  }
+
+  // 경기 결과 저장
+  const handleResultChange = async (gameId: string, result: "win" | "loss" | null) => {
+    try {
+      const success = await updateGameResult(gameId, result)
+      if (success) {
+        const updatedGames = games.map((game) =>
+          game.id === gameId ? { ...game, result: result ?? undefined } : game
+        )
+        setGames(updatedGames)
+        localStorage.setItem("samsungLionsGames", JSON.stringify(updatedGames))
+      }
+    } catch (err) {
+      console.error("경기 결과 저장 오류:", err)
+      const updatedGames = games.map((game) =>
+        game.id === gameId ? { ...game, result: result ?? undefined } : game
+      )
       setGames(updatedGames)
       localStorage.setItem("samsungLionsGames", JSON.stringify(updatedGames))
     }
@@ -238,7 +259,7 @@ export default function ScheduleList() {
       </Tabs>
 
       {viewMode === "calendar" ? (
-        <ScheduleCalendar games={games} onGameClick={handleGameClick} onMemoClick={(game) => { setSelectedGame(game); setIsMemoDialogOpen(true) }} />
+        <ScheduleCalendar games={games} onGameClick={handleGameClick} onMemoClick={(game) => { setSelectedGame(game); setIsMemoDialogOpen(true) }} onResultChange={handleResultChange} />
       ) : (
       <>
       <Card>
@@ -300,14 +321,32 @@ export default function ScheduleList() {
                       </Button>
 
                       {isPastGame(game.date) && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="h-7 px-2 text-red-500 border-red-500 ml-1"
-                          onClick={(e) => handleDeleteClick(e, game.id)}
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
+                        <>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className={`h-7 px-3 ml-1 border transition-all ${game.result === "win" ? "!bg-blue-700 !text-white border-blue-700 shadow-lg" : "!bg-blue-100 !text-blue-400 border-blue-200"}`}
+                            onClick={(e) => { e.stopPropagation(); handleResultChange(game.id, game.result === "win" ? null : "win") }}
+                          >
+                            <span className="text-xs font-bold">승</span>
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="ghost"
+                            className={`h-7 px-3 border transition-all ${game.result === "loss" ? "!bg-red-700 !text-white border-red-700 shadow-lg" : "!bg-red-100 !text-red-400 border-red-200"}`}
+                            onClick={(e) => { e.stopPropagation(); handleResultChange(game.id, game.result === "loss" ? null : "loss") }}
+                          >
+                            <span className="text-xs font-bold">패</span>
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-7 px-2 text-red-500 border-red-500"
+                            onClick={(e) => handleDeleteClick(e, game.id)}
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </>
                       )}
                     </div>
                   </div>
@@ -321,6 +360,11 @@ export default function ScheduleList() {
                   </div>
 
                   <div className="flex flex-wrap gap-1 mt-1">
+                    {game.result && (
+                      <Badge className={`${game.result === "win" ? "bg-blue-600" : "bg-red-600"} text-xs py-0.5`}>
+                        {game.result === "win" ? "승" : "패"}
+                      </Badge>
+                    )}
                     {game.preBookingDate && (
                       <Badge className="bg-green-600 text-xs py-0.5">선예매: {formatDate(game.preBookingDate)}</Badge>
                     )}

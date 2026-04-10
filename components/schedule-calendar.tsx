@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -12,9 +12,10 @@ interface ScheduleCalendarProps {
   games: Game[]
   onGameClick: (game: Game) => void
   onMemoClick: (game: Game) => void
+  onResultChange: (gameId: string, result: "win" | "loss" | null) => void
 }
 
-export default function ScheduleCalendar({ games, onGameClick, onMemoClick }: ScheduleCalendarProps) {
+export default function ScheduleCalendar({ games, onGameClick, onMemoClick, onResultChange }: ScheduleCalendarProps) {
   const [currentDate, setCurrentDate] = useState(() => {
     const now = new Date()
     const futureGame = games.find((g) => new Date(g.date) >= now)
@@ -27,6 +28,16 @@ export default function ScheduleCalendar({ games, onGameClick, onMemoClick }: Sc
   const [selectedDayGames, setSelectedDayGames] = useState<Game[]>([])
   const [selectedDayLabel, setSelectedDayLabel] = useState("")
   const [isPopupOpen, setIsPopupOpen] = useState(false)
+
+  // games가 변경되면 팝업에 표시된 게임도 업데이트
+  useEffect(() => {
+    if (selectedDayGames.length > 0) {
+      const updatedGames = selectedDayGames.map(
+        (sg) => games.find((g) => g.id === sg.id) || sg
+      )
+      setSelectedDayGames(updatedGames)
+    }
+  }, [games])
 
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
@@ -176,9 +187,16 @@ export default function ScheduleCalendar({ games, onGameClick, onMemoClick }: Sc
                       >
                         <div className="flex items-center justify-between">
                           <span className="font-medium truncate">{game.opponent}</span>
-                          {game.memo?.attendees && game.memo.attendees.length > 0 && (
-                            <FileEdit className="h-2.5 w-2.5 flex-shrink-0 text-yellow-300" />
-                          )}
+                          <div className="flex items-center gap-0.5">
+                            {game.result && (
+                              <span className={`text-[9px] font-bold px-0.5 rounded ${game.result === "win" ? "bg-blue-400" : "bg-red-400"}`}>
+                                {game.result === "win" ? "승" : "패"}
+                              </span>
+                            )}
+                            {game.memo?.attendees && game.memo.attendees.length > 0 && (
+                              <FileEdit className="h-2.5 w-2.5 flex-shrink-0 text-yellow-300" />
+                            )}
+                          </div>
                         </div>
                         <div className="opacity-90">{formatTime(game.date)}</div>
                       </div>
@@ -221,18 +239,40 @@ export default function ScheduleCalendar({ games, onGameClick, onMemoClick }: Sc
                       {formatTime(game.date)}
                     </span>
                   </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className={`h-8 px-3 ${game.memo?.attendees?.length ? "text-red-500 border-red-500" : "text-blue-500 border-blue-500"}`}
-                    onClick={() => {
-                      setIsPopupOpen(false)
-                      onMemoClick(game)
-                    }}
-                  >
-                    <FileEdit className="h-3.5 w-3.5 mr-1" />
-                    <span className="text-xs">메모</span>
-                  </Button>
+                  <div className="flex items-center gap-1">
+                    {isPast(new Date(game.date).getDate()) && (
+                      <>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className={`h-8 px-3 border transition-all ${game.result === "win" ? "!bg-blue-700 !text-white border-blue-700 shadow-lg" : "!bg-blue-100 !text-blue-400 border-blue-200"}`}
+                          onClick={() => onResultChange(game.id, game.result === "win" ? null : "win")}
+                        >
+                          <span className="text-xs font-bold">승</span>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className={`h-8 px-3 border transition-all ${game.result === "loss" ? "!bg-red-700 !text-white border-red-700 shadow-lg" : "!bg-red-100 !text-red-400 border-red-200"}`}
+                          onClick={() => onResultChange(game.id, game.result === "loss" ? null : "loss")}
+                        >
+                          <span className="text-xs font-bold">패</span>
+                        </Button>
+                      </>
+                    )}
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className={`h-8 px-3 ${game.memo?.attendees?.length ? "text-red-500 border-red-500" : "text-blue-500 border-blue-500"}`}
+                      onClick={() => {
+                        setIsPopupOpen(false)
+                        onMemoClick(game)
+                      }}
+                    >
+                      <FileEdit className="h-3.5 w-3.5 mr-1" />
+                      <span className="text-xs">메모</span>
+                    </Button>
+                  </div>
                 </div>
 
                 {game.preBookingDate && (
